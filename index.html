@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beautiful Sidebar Navigation</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", system-ui, sans-serif;
+      background: #f3f4f6;
+    }
+
+    /* Sidebar styling */
+    .sidebar-side {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 220px;
+      background: linear-gradient(180deg, #1e3a8a, #2563eb);
+      color: #fff;
+      padding-top: 20px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Sidebar buttons */
+    .button-butt {
+      width: 180px;
+      padding: 12px 16px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .button-butt:hover {
+      background: #60a5fa;
+      transform: translateX(5px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Optional: content area beside sidebar */
+    .content {
+      margin-left: 240px;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #1e293b;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-side">
+    <button class="button-butt">Dashboard</button>
+    <button class="button-butt">Profile</button>
+    <button class="button-butt">Settings</button>
+    <button class="button-butt">Messages</button>
+    <button class="button-butt">Notifications</button>
+    <button class="button-butt">Analytics</button>
+    <button class="button-butt">Users</button>
+    <button class="button-butt">Reports</button>
+    <button class="button-butt">Logout</button>
+  </div>
+
+  <div class="content">
+    <h1>Welcome to Your Dashboard</h1>
+    <p>This is your main content area. You can add whatever you want here!</p>
+  </div>
+</body>
+</html>

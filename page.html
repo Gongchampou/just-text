@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bella Cucina - Authentic Italian Restaurant</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+        
+        .menu-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .category-badge {
+            background: linear-gradient(45deg, #d4af37, #f4e4a6);
+            color: #1a1a1a;
+        }
+        
+        .price-tag {
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            color: #d4af37;
+        }
+        
+        .order-summary {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background: #d4af37;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .floating-order {
+            position: sticky;
+            top: 2rem;
+            z-index: 10;
+        }
+        
+        .item-animation {
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .modal-content {
+            animation: modalSlideIn 0.4s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .quantity-control {
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            border: 2px solid #d4af37;
+        }
+        
+        .add-to-cart-btn {
+            background: linear-gradient(45deg, #d4af37, #f4e4a6);
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .section-divider {
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            height: 1px;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="min-h-full bg-gray-50 font-inter"><!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center h-16">
+     <div class="flex items-center space-x-2">
+      <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center"><span class="text-white font-bold text-sm">BC</span>
+      </div><span id="nav-restaurant-name" class="font-playfair text-xl font-semibold text-gray-900">Bella Cucina</span>
+     </div>
+     <div class="hidden md:flex space-x-8"><a href="#hero" class="nav-link text-gray-700 hover:text-gray-900 font-medium">Home</a> <a href="#menu" class="nav-link text-gray-700 hover:text-gray-900 font-medium">Menu</a> <a href="#about" class="nav-link text-gray-700 hover:text-gray-900 font-medium">About</a> <a href="#contact" class="nav-link text-gray-700 hover:text-gray-900 font-medium">Contact</a>
+     </div>
+     <div class="flex items-center space-x-4"><span class="text-sm text-gray-600">📞 <span id="nav-phone">(555) 123-4567</span></span>
+     </div>
+    </div>
+   </div>
+  </nav><!-- Hero Section -->
+  <section id="hero" class="hero-gradient text-white py-20">
+   <div class="max-w-7xl mx-auto px-6 text-center">
+    <h1 id="hero-title" class="font-playfair text-5xl md:text-6xl font-bold mb-6">Authentic Italian Excellence</h1>
+    <p id="hero-subtitle" class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">Experience the finest Italian cuisine crafted with passion, tradition, and the freshest ingredients imported directly from Italy</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center"><button onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})" class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-8 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"> View Our Menu </button> <button class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-black transition-all duration-300"> Make Reservation </button>
+    </div>
+   </div>
+  </section><!-- About Section -->
+  <section id="about" class="py-16 bg-white">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+     <div>
+      <h2 class="font-playfair text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
+      <p class="text-gray-600 text-lg leading-relaxed mb-6">Founded in 1985 by the Rossi family, Bella Cucina has been serving authentic Italian cuisine for over three decades. Our recipes have been passed down through generations, ensuring every dish tells a story of tradition and passion.</p>
+      <p class="text-gray-600 text-lg leading-relaxed">From our wood-fired pizzas to our handmade pasta, every meal is prepared with love and the finest ingredients sourced directly from Italy's most renowned regions.</p>
+     </div>
+     <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 text-center">
+      <div class="text-6xl mb-4">
+       🍝
+      </div>
+      <h3 class="font-playfair text-2xl font-semibold text-gray-900 mb-2">Family Tradition</h3>
+      <p class="text-gray-600">Three generations of authentic Italian cooking</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Menu Section -->
+  <section id="menu" class="py-16 bg-gray-50">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12">
+     <h2 class="font-playfair text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Menu</h2>
+     <div class="section-divider w-24 mx-auto mb-6"></div>
+     <p class="text-xl text-gray-600 max-w-2xl mx-auto">Discover our carefully curated selection of traditional Italian dishes, each prepared with authentic recipes and premium ingredients</p>
+    </div>
+    <div class="grid lg:grid-cols-4 gap-8"><!-- Menu Items -->
+     <div class="lg:col-span-3"><!-- Appetizers -->
+      <div class="mb-12">
+       <div class="flex items-center mb-8"><span class="category-badge px-4 py-2 rounded-full font-semibold text-sm mr-4">ANTIPASTI</span>
+        <h3 class="font-playfair text-3xl font-bold text-gray-900">Appetizers</h3>
+       </div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('appetizers', 'bruschetta', 'Bruschetta Classica', 12, 'Grilled artisan bread topped with fresh Roma tomatoes, basil, garlic, and extra virgin olive oil')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Bruschetta Classica</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$12</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Grilled artisan bread topped with fresh Roma tomatoes, basil, garlic, and extra virgin olive oil</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full mr-2">Vegetarian</span> <span>🕐 5 min</span>
+         </div>
+        </div>
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('appetizers', 'antipasto', 'Antipasto della Casa', 18, 'Chef selection of cured meats, artisanal cheeses, marinated olives, and roasted vegetables')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Antipasto della Casa</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$18</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Chef's selection of cured meats, artisanal cheeses, marinated olives, and roasted vegetables</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full mr-2">Signature</span> <span>🕐 8 min</span>
+         </div>
+        </div>
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('appetizers', 'calamari', 'Calamari Fritti', 16, 'Tender squid rings lightly battered and fried, served with spicy marinara and lemon aioli')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Calamari Fritti</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$16</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Tender squid rings lightly battered and fried, served with spicy marinara and lemon aioli</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full mr-2">Seafood</span> <span>🕐 12 min</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Pasta -->
+      <div class="mb-12">
+       <div class="flex items-center mb-8"><span class="category-badge px-4 py-2 rounded-full font-semibold text-sm mr-4">PASTA</span>
+        <h3 class="font-playfair text-3xl font-bold text-gray-900">Handmade Pasta</h3>
+       </div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('pastas', 'carbonara', 'Spaghetti Carbonara', 22, 'Traditional Roman pasta with pancetta, eggs, pecorino Romano, and black pepper')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Spaghetti Carbonara</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$22</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Traditional Roman pasta with pancetta, eggs, pecorino Romano, and black pepper</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full mr-2">Classic</span> <span>🕐 15 min</span>
+         </div>
+        </div>
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('pastas', 'bolognese', 'Tagliatelle Bolognese', 24, 'Fresh egg pasta with our signature meat sauce, slow-cooked for 6 hours')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Tagliatelle Bolognese</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$24</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Fresh egg pasta with our signature meat sauce, slow-cooked for 6 hours</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full mr-2">Chef's Special</span> <span>🕐 18 min</span>
+         </div>
+        </div>
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('pastas', 'seafood', 'Linguine ai Frutti di Mare', 28, 'Fresh linguine with mussels, clams, shrimp, and calamari in white wine sauce')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Linguine ai Frutti di Mare</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$28</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Fresh linguine with mussels, clams, shrimp, and calamari in white wine sauce</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full mr-2">Seafood</span> <span>🕐 20 min</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Desserts -->
+      <div class="mb-12">
+       <div class="flex items-center mb-8"><span class="category-badge px-4 py-2 rounded-full font-semibold text-sm mr-4">DOLCI</span>
+        <h3 class="font-playfair text-3xl font-bold text-gray-900">Desserts</h3>
+       </div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('desserts', 'tiramisu', 'Tiramisu della Casa', 12, 'Classic Italian dessert with espresso-soaked ladyfingers and mascarpone cream')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Tiramisu della Casa</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$12</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Classic Italian dessert with espresso-soaked ladyfingers and mascarpone cream</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full mr-2">House Made</span> <span>🕐 Ready</span>
+         </div>
+        </div>
+        <div class="menu-card bg-white rounded-2xl p-6 shadow-lg cursor-pointer" onclick="selectItem('desserts', 'cannoli', 'Cannoli Siciliani', 10, 'Crispy shells filled with sweet ricotta, chocolate chips, and candied orange')">
+         <div class="flex justify-between items-start mb-4">
+          <h4 class="font-playfair text-xl font-semibold text-gray-900">Cannoli Siciliani</h4><span class="price-tag px-3 py-1 rounded-full text-sm font-bold">$10</span>
+         </div>
+         <p class="text-gray-600 text-sm leading-relaxed mb-4">Crispy shells filled with sweet ricotta, chocolate chips, and candied orange</p>
+         <div class="flex items-center text-xs text-gray-500"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full mr-2">Traditional</span> <span>🕐 Ready</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Order Summary -->
+     <div class="lg:col-span-1">
+      <div class="floating-order">
+       <div class="order-summary rounded-2xl p-6">
+        <h3 id="order-summary-title" class="font-playfair text-2xl font-bold text-gray-900 mb-6 text-center">Your Order</h3>
+        <div id="order-items" class="space-y-4 mb-6 min-h-32">
+         <div class="text-center py-8 text-gray-500">
+          <div class="text-4xl mb-2">
+           🍽️
+          </div>
+          <p>Select items to start your order</p>
+         </div>
+        </div>
+        <div class="border-t border-gray-200 pt-4">
+         <div class="flex justify-between items-center text-xl font-bold mb-4"><span class="font-playfair">Total:</span> <span id="total-price" class="text-yellow-600">$0.00</span>
+         </div>
+         <div id="checkout-section" class="hidden"><button class="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-3 rounded-xl font-semibold hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105 mb-3"> Proceed to Checkout </button>
+          <p class="text-xs text-gray-500 text-center">Estimated delivery: 25-35 minutes</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Contact Section -->
+  <section id="contact" class="py-16 bg-gray-900 text-white">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-8">
+     <div class="text-center">
+      <div class="text-4xl mb-4">
+       📍
+      </div>
+      <h3 class="font-playfair text-xl font-semibold mb-2">Visit Us</h3>
+      <p id="address" class="text-gray-300">123 Little Italy Street<br>
+       New York, NY 10013</p>
+     </div>
+     <div class="text-center">
+      <div class="text-4xl mb-4">
+       📞
+      </div>
+      <h3 class="font-playfair text-xl font-semibold mb-2">Call Us</h3>
+      <p id="phone" class="text-gray-300">(555) 123-4567</p>
+     </div>
+     <div class="text-center">
+      <div class="text-4xl mb-4">
+       🕐
+      </div>
+      <h3 class="font-playfair text-xl font-semibold mb-2">Hours</h3>
+      <p class="text-gray-300">Mon-Thu: 5PM-10PM<br>
+       Fri-Sat: 5PM-11PM<br>
+       Sun: 4PM-9PM</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="bg-black text-white py-8">
+   <div class="max-w-7xl mx-auto px-6 text-center">
+    <div class="flex items-center justify-center space-x-2 mb-4">
+     <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center"><span class="text-black font-bold text-sm">BC</span>
+     </div><span id="footer-restaurant-name" class="font-playfair text-xl font-semibold">Bella Cucina</span>
+    </div>
+    <p class="text-gray-400 mb-4">© 2024 Bella Cucina. All rights reserved.</p>
+    <div class="flex justify-center space-x-6 text-sm text-gray-400"><a href="#" class="hover:text-white transition-colors">Privacy Policy</a> <a href="#" class="hover:text-white transition-colors">Terms of Service</a> <a href="#" class="hover:text-white transition-colors">Reservations</a>
+    </div>
+   </div>
+  </footer><!-- Item Customization Modal -->
+  <div id="customization-modal" class="fixed inset-0 modal-backdrop hidden items-center justify-center z-50">
+   <div class="modal-content bg-white rounded-2xl p-8 max-w-lg w-full mx-4 shadow-2xl">
+    <div class="flex justify-between items-start mb-6">
+     <div>
+      <h3 id="modal-title" class="font-playfair text-2xl font-bold text-gray-900 mb-2"></h3>
+      <p id="modal-description" class="text-gray-600 text-sm"></p>
+     </div><button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+    </div><!-- Protein Add-ons for Pasta -->
+    <div id="protein-addons" class="mb-6 hidden">
+     <h4 class="font-semibold text-gray-900 mb-3">Add Protein</h4>
+     <div class="space-y-2"><label class="flex items-center p-3 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-yellow-400 transition-colors"> <input type="radio" name="protein" value="none" class="mr-3" checked> <span class="flex-1">No protein</span> </label> <label class="flex items-center p-3 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-yellow-400 transition-colors"> <input type="radio" name="protein" value="chicken" class="mr-3"> <span class="flex-1">Grilled Chicken</span> <span class="text-yellow-600 font-semibold">+$6</span> </label> <label class="flex items-center p-3 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-yellow-400 transition-colors"> <input type="radio" name="protein" value="shrimp" class="mr-3"> <span class="flex-1">Grilled Shrimp</span> <span class="text-yellow-600 font-semibold">+$8</span> </label> <label class="flex items-center p-3 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-yellow-400 transition-colors"> <input type="radio" name="protein" value="salmon" class="mr-3"> <span class="flex-1">Pan-Seared Salmon</span> <span class="text-yellow-600 font-semibold">+$10</span> </label>
+     </div>
+    </div><!-- Quantity -->
+    <div class="mb-8">
+     <h4 class="font-semibold text-gray-900 mb-3">Quantity</h4>
+     <div class="flex items-center justify-center space-x-4"><button class="quantity-control text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl hover:scale-110 transition-transform" onclick="changeQuantity(-1)">-</button> <span id="quantity-display" class="text-2xl font-bold text-gray-900 min-w-8 text-center">1</span> <button class="quantity-control text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl hover:scale-110 transition-transform" onclick="changeQuantity(1)">+</button>
+     </div>
+    </div>
+    <div class="flex space-x-4"><button class="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-xl font-semibold hover:bg-gray-300 transition-colors" onclick="closeModal()">Cancel</button> <button class="flex-1 add-to-cart-btn py-3 px-6 rounded-xl font-semibold" onclick="addToOrder()">Add to Order</button>
+    </div>
+   </div>
+  </div>
+  <script>
+        const defaultConfig = {
+            restaurant_name: "Bella Cucina",
+            tagline: "Authentic Italian Cuisine Made Fresh Daily",
+            hero_title: "Authentic Italian Excellence",
+            hero_subtitle: "Experience the finest Italian cuisine crafted with passion, tradition, and the freshest ingredients imported directly from Italy",
+            order_summary_title: "Your Order",
+            address: "123 Little Italy Street\nNew York, NY 10013",
+            phone: "(555) 123-4567",
+            background_color: "#f9fafb",
+            card_color: "#ffffff",
+            text_color: "#111827",
+            accent_color: "#d4af37",
+            font_family: "Inter",
+            font_size: 16
+        };
+
+        let currentItem = null;
+        let currentQuantity = 1;
+        let orderItems = [];
+        let orderTotal = 0;
+
+        function selectItem(category, id, name, price, description) {
+            currentItem = { category, id, name, price, description };
+            currentQuantity = 1;
+            
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-description').textContent = description;
+            document.getElementById('quantity-display').textContent = '1';
+            
+            // Show protein options for pasta
+            const proteinAddons = document.getElementById('protein-addons');
+            if (category === 'pastas') {
+                proteinAddons.classList.remove('hidden');
+                // Reset protein selection
+                document.querySelector('input[name="protein"][value="none"]').checked = true;
+            } else {
+                proteinAddons.classList.add('hidden');
+            }
+            
+            document.getElementById('customization-modal').classList.remove('hidden');
+            document.getElementById('customization-modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('customization-modal').classList.add('hidden');
+            document.getElementById('customization-modal').classList.remove('flex');
+        }
+
+        function changeQuantity(delta) {
+            currentQuantity = Math.max(1, currentQuantity + delta);
+            document.getElementById('quantity-display').textContent = currentQuantity;
+        }
+
+        function addToOrder() {
+            if (!currentItem) return;
+            
+            let itemPrice = currentItem.price;
+            let itemName = currentItem.name;
+            let addons = [];
+            
+            // Check for protein addon
+            if (currentItem.category === 'pastas') {
+                const selectedProtein = document.querySelector('input[name="protein"]:checked').value;
+                if (selectedProtein !== 'none') {
+                    const proteinPrices = { chicken: 6, shrimp: 8, salmon: 10 };
+                    itemPrice += proteinPrices[selectedProtein];
+                    const proteinNames = { chicken: 'Grilled Chicken', shrimp: 'Grilled Shrimp', salmon: 'Pan-Seared Salmon' };
+                    addons.push(proteinNames[selectedProtein]);
+                }
+            }
+            
+            const orderItem = {
+                id: Date.now(),
+                name: itemName,
+                addons: addons,
+                quantity: currentQuantity,
+                unitPrice: itemPrice,
+                totalPrice: itemPrice * currentQuantity
+            };
+            
+            orderItems.push(orderItem);
+            updateOrderDisplay();
+            closeModal();
+        }
+
+        function updateOrderDisplay() {
+            const orderContainer = document.getElementById('order-items');
+            const checkoutSection = document.getElementById('checkout-section');
+            
+            if (orderItems.length === 0) {
+                orderContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-2">🍽️</div>
+                        <p>Select items to start your order</p>
+                    </div>
+                `;
+                orderTotal = 0;
+                checkoutSection.classList.add('hidden');
+            } else {
+                orderContainer.innerHTML = orderItems.map(item => `
+                    <div class="item-animation bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-semibold text-gray-900 text-sm">${item.name}</h4>
+                            <button class="text-red-500 hover:text-red-700 text-lg font-bold" onclick="removeItem(${item.id})">×</button>
+                        </div>
+                        ${item.addons.length > 0 ? `<p class="text-xs text-gray-600 mb-2">+ ${item.addons.join(', ')}</p>` : ''}
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Qty: ${item.quantity}</span>
+                            <span class="font-bold text-yellow-600">$${item.totalPrice.toFixed(2)}</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                orderTotal = orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
+                checkoutSection.classList.remove('hidden');
+            }
+            
+            document.getElementById('total-price').textContent = `$${orderTotal.toFixed(2)}`;
+        }
+
+        function removeItem(itemId) {
+            orderItems = orderItems.filter(item => item.id !== itemId);
+            updateOrderDisplay();
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Element SDK Integration
+        async function onConfigChange(config) {
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseSize = config.font_size || defaultConfig.font_size;
+            const baseFontStack = 'Inter, sans-serif';
+            const playfairStack = 'Playfair Display, serif';
+
+            // Update text content
+            document.getElementById('nav-restaurant-name').textContent = config.restaurant_name || defaultConfig.restaurant_name;
+            document.getElementById('footer-restaurant-name').textContent = config.restaurant_name || defaultConfig.restaurant_name;
+            document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+            document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+            document.getElementById('order-summary-title').textContent = config.order_summary_title || defaultConfig.order_summary_title;
+            document.getElementById('address').innerHTML = (config.address || defaultConfig.address).replace(/\n/g, '<br>');
+            document.getElementById('phone').textContent = config.phone || defaultConfig.phone;
+            document.getElementById('nav-phone').textContent = config.phone || defaultConfig.phone;
+
+            // Apply colors
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const cardColor = config.card_color || defaultConfig.card_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const accentColor = config.accent_color || defaultConfig.accent_color;
+
+            document.body.style.backgroundColor = backgroundColor;
+            
+            // Update card colors
+            document.querySelectorAll('.menu-card, .order-summary').forEach(el => {
+                el.style.backgroundColor = cardColor;
+            });
+
+            // Update text colors
+            document.querySelectorAll('h1, h2, h3, h4, .text-gray-900').forEach(el => {
+                el.style.color = textColor;
+            });
+
+            // Update accent colors
+            document.querySelectorAll('.price-tag, .quantity-control').forEach(el => {
+                el.style.background = `linear-gradient(45deg, ${textColor}, #2d2d2d)`;
+                el.style.color = accentColor;
+            });
+
+            // Apply fonts
+            document.querySelectorAll('.font-inter, body').forEach(el => {
+                el.style.fontFamily = `${customFont}, ${baseFontStack}`;
+            });
+
+            document.querySelectorAll('.font-playfair').forEach(el => {
+                el.style.fontFamily = `${customFont}, ${playfairStack}`;
+            });
+
+            // Apply font sizes
+            document.body.style.fontSize = `${baseSize}px`;
+            document.querySelector('#hero-title').style.fontSize = `${baseSize * 3.5}px`;
+            document.querySelectorAll('h2').forEach(el => {
+                el.style.fontSize = `${baseSize * 2.25}px`;
+            });
+            document.querySelectorAll('h3').forEach(el => {
+                el.style.fontSize = `${baseSize * 1.875}px`;
+            });
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            config.background_color = value;
+                            window.elementSdk.setConfig({ background_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.card_color || defaultConfig.card_color,
+                        set: (value) => {
+                            config.card_color = value;
+                            window.elementSdk.setConfig({ card_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            config.text_color = value;
+                            window.elementSdk.setConfig({ text_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.accent_color || defaultConfig.accent_color,
+                        set: (value) => {
+                            config.accent_color = value;
+                            window.elementSdk.setConfig({ accent_color: value });
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => config.font_family || defaultConfig.font_family,
+                    set: (value) => {
+                        config.font_family = value;
+                        window.elementSdk.setConfig({ font_family: value });
+                    }
+                },
+                fontSizeable: {
+                    get: () => config.font_size || defaultConfig.font_size,
+                    set: (value) => {
+                        config.font_size = value;
+                        window.elementSdk.setConfig({ font_size: value });
+                    }
+                }
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["restaurant_name", config.restaurant_name || defaultConfig.restaurant_name],
+                ["tagline", config.tagline || defaultConfig.tagline],
+                ["hero_title", config.hero_title || defaultConfig.hero_title],
+                ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+                ["order_summary_title", config.order_summary_title || defaultConfig.order_summary_title],
+                ["address", config.address || defaultConfig.address],
+                ["phone", config.phone || defaultConfig.phone]
+            ]);
+        }
+
+        // Initialize SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'996f9ac8d7fa7e2c',t:'MTc2MTg3NjUwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
